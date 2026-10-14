@@ -1,0 +1,20 @@
+# Dados locais — não enviar ao GitHub
+data/
+
+# Cache do Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Ambientes virtuais
+.venv/
+venv/
+
+# Credenciais e configurações sensíveis
+.env
+.env.*
+!.env.example
+.aws/
+
+# Arquivos temporários
+*.log
