@@ -1,0 +1,33 @@
+
+name: CI - Tesouro Direto
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validar-python:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: pip install pandas pyarrow pytest boto3 truststore
+
+      - name: Verificar sintaxe
+        run: python -m compileall -q src tests
+
+      - name: Executar testes existentes
+        run: python -m pytest -q tests
