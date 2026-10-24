@@ -1,0 +1,41 @@
+
+name: CD - Tesouro Direto AWS
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Autenticar na AWS via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::369607682461:role/tesouro-github-actions-role
+          aws-region: us-east-1
+
+      - name: Preparar pacote Lambda
+        run: |
+          mkdir -p package
+          cp src/10_lambda_ingestion.py package/lambda_function.py
+          cd package
+          zip -q ../lambda.zip lambda_function.py
+
+      - name: Publicar Lambda
+        run: |
+          aws lambda update-function-code \
+            --function-name tesouro-ingestion \
+            --zip-file fileb://lambda.zip
+
+      - name: Publicar script Glue
+        run: |
+          aws s3 cp src/11_glue_bronze_silver_gold.py \
+            s3://rafael-portfolio-tesouro-aws/glue/scripts/tesouro-bronze-silver-gold.py
