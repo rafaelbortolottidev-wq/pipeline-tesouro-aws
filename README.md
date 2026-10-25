@@ -1,3 +1,5 @@
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/8d009cfb-22d8-4f6e-a5fc-eabaaf979139" />
+
 # Pipeline Tesouro Direto AWS 🚀
 
 **Projeto de portfólio | Engenharia de Dados | Python | AWS**
